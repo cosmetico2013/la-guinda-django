@@ -1,4 +1,3 @@
-from laguinda.settings import BASE_DIR
 from django.db import models
 
 class Usuario(models.Model):
@@ -36,6 +35,7 @@ class Valoracione(models.Model):
     valousu = models.ForeignKey('Usuario', on_delete=models.Case)
     puntuacion = models.DecimalField(max_digits=5, decimal_places=0)
     comentario = models.CharField(max_length=500)
+#    fecha_publicacion = models.TimeField(default=)
 
     def __str__(self):
         return self.puntuacion
