@@ -19,6 +19,6 @@ from laguindaapi.views import ProductoListView, ProductoDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('Productos/', ProductoListView.as_view()),
+    path('Producto/', ProductoListView.as_view(), name='producto-list' ),
     path('Producto/<int:pk>/', ProductoDetailView.as_view(), name='producto-detail')
 ]
