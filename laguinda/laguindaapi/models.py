@@ -43,7 +43,7 @@ class Valoracione(models.Model):
 class Componente(models.Model):
     compoingre = models.ForeignKey('Ingrediente', on_delete=models.Case)
     compoprodu = models.ForeignKey('Producto', on_delete=models.Case)
-    orden = models.DecimalField(max_digits=10, decimal_places=0)
+#    orden = models.DecimalField(max_digits=10, decimal_places=0)
 
     def __str__(self):
         return self.orden
