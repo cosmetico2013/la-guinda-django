@@ -8,3 +8,6 @@ class ProductoListView(ListView):
 
 class ProductoDetailView(DetailView):
     model = Producto
+
+class ComponenteListView(ListView):
+    model = Componente

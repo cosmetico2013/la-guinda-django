@@ -4,7 +4,7 @@
     <h2>Producto</h2>
     <ul>
         {% for Producto in object_list %}
-            <li> <a href=" {% url 'producto-detail' Producto.id %} ">{{ Producto.nombre }}</a><img src=" {{ Producto.imagen }} " alt="imagen producto"> </li>
+            <li> <a href=" {% url 'producto-detail' Producto.id %} ">{{ Producto.nombre }}</a><img src="{{ Producto.imagen }} " alt="imagen producto"> </li>
         {% endfor %}
     </ul>
 {% endblock %}

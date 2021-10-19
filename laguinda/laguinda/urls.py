@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from laguindaapi.views import ProductoListView, ProductoDetailView
+from laguindaapi.views import ProductoListView, ProductoDetailView, ComponenteListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('producto/', ProductoListView.as_view(), name='producto-list' ),
-    path('producto/<int:pk>/', ProductoDetailView.as_view(), name='producto-detail')
+    path('producto/<int:pk>/', ProductoDetailView.as_view(), name='producto-detail'),
+    path('componente/', ComponenteListView.as_view, name='componente-list'),
 ]

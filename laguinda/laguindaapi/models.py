@@ -18,7 +18,7 @@ class Oferta(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=50)
     precio = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    oferta = models.ForeignKey('Oferta', on_delete=models.Case)
+    oferta = models.ForeignKey('Oferta', on_delete=models.CASCADE)
     imagen = models.FileField(upload_to="imagenes/")
 
     def __str__(self):
@@ -31,19 +31,19 @@ class Ingrediente(models.Model):
         return self.nombre
 
 class Valoracione(models.Model):
-    valoproduc = models.ForeignKey('Producto', on_delete=models.Case)
-    valousu = models.ForeignKey('Usuario', on_delete=models.Case)
+    valoproduc = models.ForeignKey('Producto', on_delete=models.CASCADE)
+    valousu = models.ForeignKey('Usuario', on_delete=models.CASCADE)
     puntuacion = models.DecimalField(max_digits=5, decimal_places=0)
     comentario = models.CharField(max_length=500)
 #    fecha_publicacion = models.TimeField(default=)
 
     def __str__(self):
-        return self.puntuacion
+        return str(self.valousu)+": "+str(self.valoproduc)
 
 class Componente(models.Model):
-    compoingre = models.ForeignKey('Ingrediente', on_delete=models.Case)
-    compoprodu = models.ForeignKey('Producto', on_delete=models.Case)
+    compoingre = models.ForeignKey('Ingrediente', on_delete=models.CASCADE)
+    compoprodu = models.ForeignKey('Producto', on_delete=models.CASCADE)
 #    orden = models.DecimalField(max_digits=10, decimal_places=0)
 
     def __str__(self):
-        return self.orden
+        return str(self.compoprodu)+": "+str(self.compoingre)
