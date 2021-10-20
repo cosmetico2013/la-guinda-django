@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Producto</h2>
+    <h2>Producto <a href=" {% url 'producto-add' %} ">AÑADIR</a></h2>
     <ul>
         {% for Producto in object_list %}
-            <li> <a href=" {% url 'producto-detail' Producto.id %} ">{{ Producto.nombre }}</a><img src="{{ Producto.imagen }} " alt="imagen producto"> </li>
+            <li> <a href=" {% url 'producto-detail' Producto.id %} ">{{ Producto.nombre }}</a>
+                <img src="{{ Producto.imagen }} " alt="imagen producto">
+                <a href=" {% url 'producto-update' Producto.id %} ">EDID</a>
+                <a href=" {% url 'producto-delete' Producto.id %} ">BORRAR</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}
