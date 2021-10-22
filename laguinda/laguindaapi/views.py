@@ -23,5 +23,3 @@ class ProductoDeleteView(DeleteView):
 class ProductoDetailView(DetailView):
     model = Producto
 
-class ComponenteListView(ListView):
-    model = Componente

@@ -2,3 +2,5 @@ laguinda/db.sqlite3
 laguinda/laguinda/__pycache__/*.pyc
 laguinda/laguindaapi/__pycache__/*.pyc
 laguinda/laguindaapi/migrations/__pycache__/*.pyc
+laguinda/laguindaapi/management/commands/__pycache__/*.pyc
+laguinda/laguindaapi/management/__pycache__/*.pyc
