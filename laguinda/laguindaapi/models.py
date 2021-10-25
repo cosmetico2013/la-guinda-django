@@ -1,9 +1,9 @@
 from django.db import models
 from django.forms import ModelForm
+from django.contrib.auth.models import User
 
 class Usuario(models.Model):
-    nombre = models.CharField(max_length=50)
-    apellidos = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     correo = models.EmailField()
     
     def __str__(self):
