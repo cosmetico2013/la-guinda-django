@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.urls.conf import include
 from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCreateView, ProductoDeleteView, ProductoUpdateView
 
 urlpatterns = [
@@ -25,4 +26,6 @@ urlpatterns = [
     path('producto/add/', ProductoCreateView.as_view(), name='producto-add'),
     path('producto/<int:pk>/update/', ProductoUpdateView.as_view(), name='producto-update'),
     path('producto/<int:pk>/delete/', ProductoDeleteView.as_view(), name='producto-delete'),
+
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
