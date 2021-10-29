@@ -1,7 +1,7 @@
 """laguinda URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.0/topics/http/urls/
+    https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -20,7 +20,7 @@ from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCrea
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
     path('producto/', ProductoListView.as_view(), name='producto-list' ),
     path('producto/<int:pk>/', ProductoDetailView.as_view(), name='producto-detail'),
     path('producto/add/', ProductoCreateView.as_view(), name='producto-add'),
