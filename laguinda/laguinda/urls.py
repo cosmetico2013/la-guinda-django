@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
-from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCreateView, ProductoDeleteView, ProductoUpdateView
+from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCreateView, ProductoDeleteView, ProductoUpdateView, ValoracionView, ValoracionCreateView, ValoracionDeleteView, ValoracionUpdateView, ValoracionDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +26,12 @@ urlpatterns = [
     path('producto/add/', ProductoCreateView.as_view(), name='producto-add'),
     path('producto/<int:pk>/update/', ProductoUpdateView.as_view(), name='producto-update'),
     path('producto/<int:pk>/delete/', ProductoDeleteView.as_view(), name='producto-delete'),
+
+    path('valoracion/', ValoracionView.as_view(), name='valoracion-view'),
+    path('valoracion/<int:pk>/', ValoracionDetailView.as_view(), name='valoracion-detail'),
+    path('valoracion/add/', ValoracionCreateView.as_view(), name='valoracion-add'),
+    path('valoracion/<int:pk>/update/', ValoracionUpdateView.as_view(), name='valoracion-update'),
+    path('valoracion/<int:pk>/delete/', ValoracionDeleteView.as_view(), name='valoracion-delete'),
 
     path('accounts/', include('django.contrib.auth.urls')),
 ]

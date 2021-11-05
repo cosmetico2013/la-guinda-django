@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
-from .models import Usuario, Producto, Ingrediente, Valoracione, Componente, Oferta
+from .models import Usuario, Producto, Ingrediente, Valoracion, Componente, Oferta
 
 class UsuarioInline(admin.StackedInline):
     model = Usuario
@@ -15,7 +15,7 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(Usuario)
 admin.site.register(Producto)
 admin.site.register(Ingrediente)
-admin.site.register(Valoracione)
+admin.site.register(Valoracion)
 admin.site.register(Componente)
 admin.site.register(Oferta)
 

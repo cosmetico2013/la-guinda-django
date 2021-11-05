@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Valoraciones <a href=" {% url 'valoracion-add' %} ">AÑADIR</a></h2>
+    <ul>
+        {% for Valoracion in object_list %}
+            <li> <a href=" {% url 'valoracion-detail' Valoracion.id %} ">{{ Valoracion.cabecera }}</a>
+                <a href=" {% url 'valoracion-update' Valoracion.id %} ">EDID</a>
+                <a href=" {% url 'valoracion-delete' Valoracion.id %} ">BORRAR</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

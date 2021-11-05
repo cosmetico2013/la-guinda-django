@@ -31,15 +31,16 @@ class Ingrediente(models.Model):
     def __str__(self):
         return self.nombre
 
-class Valoracione(models.Model):
+class Valoracion(models.Model):
     valoproduc = models.ForeignKey('Producto', on_delete=models.CASCADE)
     valousu = models.ForeignKey('Usuario', on_delete=models.CASCADE)
+    cabecera= models.CharField(max_length=100)
     puntuacion = models.DecimalField(max_digits=5, decimal_places=0)
     comentario = models.CharField(max_length=500)
 #    fecha_publicacion = models.TimeField(default=)
 
     def __str__(self):
-        return str(self.valousu)+": "+str(self.valoproduc)
+        return self.cabecera
 
 class Componente(models.Model):
     compoingre = models.ForeignKey('Ingrediente', on_delete=models.CASCADE)
