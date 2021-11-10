@@ -22,6 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3!5g@ombbm(*f=#cd)%5o6ol*bf1-_@qnex#^#liufezgy#bda'
 
+ACCOUNT_ACTIVATION_DAYS = 70 # One-week activation window
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'laguindaapi',
     'django_extensions',
+    'django_registration',
 ]
 
 MIDDLEWARE = [

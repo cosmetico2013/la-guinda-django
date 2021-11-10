@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import permission_required
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from laguindaapi.models import Usuario, Oferta ,Producto, Ingrediente, Valoracion, Componente
@@ -22,6 +21,8 @@ class ProductoUpdateView(PermissionRequiredMixin,UpdateView):
     template_name_suffix = '_update_form'
     permission_required='laguindaapi.change_choice'
 
+def index(request):
+      return render(request,'laguindaapi/index.html')
 class ProductoDeleteView(PermissionRequiredMixin,DeleteView):
     model = Producto
     success_url = reverse_lazy('producto-list')
@@ -33,10 +34,11 @@ class ProductoDetailView(DetailView):
 class ValoracionView(ListView):
     model = Valoracion
 
-class ValoracionCreateView(PermissionRequiredMixin,CreateView):
+class ValoracionCreateView(LoginRequiredMixin,CreateView):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
     model = Valoracion
     fields = ['valoproduc','valousu','cabecera','puntuacion','comentario']
-    permission_required='laguindaapi.add_choice'
 
 class ValoracionUpdateView(PermissionRequiredMixin,UpdateView):
     model = Valoracion
