@@ -5,7 +5,7 @@
     <ul>
         {% for Producto in object_list %}
             <li> <a href=" {% url 'producto-detail' Producto.id %} ">{{ Producto.nombre }}</a>
-                <img src="{{ Producto.imagen }} " alt="imagen producto">
+                <img src="/media/{{ Producto.imagen }}" alt="imagen producto">
                 <a href=" {% url 'producto-update' Producto.id %} ">EDID</a>
                 <a href=" {% url 'producto-delete' Producto.id %} ">BORRAR</a>
             </li>
