@@ -1,5 +1,8 @@
 {% extends "base.html" %}
-
+{% block head %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="/media/css/producto.css">
+{% endblock %}
 {% block content %}
     <h2>Producto <a href=" {% url 'producto-add' %} ">AÑADIR</a></h2>
     <ul>
