@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Comentario 
+        {% if user.is_authenticated %}
+        <a href=" {% url 'comentario-add' %} ">AÑADIR</a></h2>
+        {% endif %}
+    <ul>
+        {% for comentario in object_list %}
+            <li> <a href=" {% url 'comentario-detail' comentario.id %} ">{{ comentario.cabecera }}</a>
+                <a href=" {% url 'comentario-update' comentario.id %} ">EDID</a>
+                <a href=" {% url 'comentario-delete' comentario.id %} ">BORRAR</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

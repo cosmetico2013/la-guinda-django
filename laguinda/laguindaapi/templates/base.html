@@ -7,10 +7,14 @@
     </head>
     <body>
         <nav>
+            {% if user.is_authenticated %}
+            <a href="/accounts/logout/">logout</a>
+            {% else %}
             <a href="/accounts/register">register</a>
             <a href="/accounts/login/">login</a>
-            <a href="/accounts/logout/">logout</a>
+            {% endif %}
             <a href="/producto/">producto</a>
+            <a href="/comentario/">comentario</a>
             <a href="/valoracion/">valoracion</a>
         </nav>
     {% block content %}{% endblock %}

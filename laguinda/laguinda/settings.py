@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'laguindaapi',
     'django_extensions',
     'django_registration',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
