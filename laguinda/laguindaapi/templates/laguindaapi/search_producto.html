@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 {% block head %}
 {% endblock %}
 {% block content %}
@@ -38,5 +37,8 @@
                 </li>
             {% endfor %}
         </ul> -->
+        {% for Producto in producto %}
+        <p>{{ Producto }}</p>
+        {% endfor %}
     </div>
 {% endblock %}

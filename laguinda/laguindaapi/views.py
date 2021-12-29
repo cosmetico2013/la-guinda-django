@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.views.generic import ListView, DetailView
+from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from laguindaapi.models import Producto, Comentario, Valoracion
-
+from django.db.models import Q
 # vistas para index
 
 def index(request):
@@ -35,6 +36,7 @@ class ProductoDeleteView(PermissionRequiredMixin,DeleteView):
 
 class ProductoDetailView(DetailView):
     model = Producto
+    pro = Comentario
 
 
 # vistas para comentarios
@@ -94,3 +96,13 @@ class ValoracionDeleteView(PermissionRequiredMixin,DeleteView):
     model = Valoracion
     success_url = reverse_lazy('comentario-list')
     permission_required='laguindaapi.delete_choice'
+
+# busqueda para productos
+class Search_producto(ListView):
+    model = Producto
+    Template_name = 'search_producto.html'
+    def get_queryset (self):
+        query = self.request.GET.get("q")
+        object_list = Producto.objects.filter( Q (nombre__icontains=query))
+        return object_list
+        

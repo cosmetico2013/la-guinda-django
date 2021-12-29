@@ -3,14 +3,26 @@
 <link rel="stylesheet" type="text/css" href="/media/css/producto.css">
 {% endblock %}
 {% block content %}
-    <h2>Producto</h2>
-    <p> {{ object.nombre }} </p>
-    <p>Precio: {{ object.precio }}€</p>
-    <p>Oferta: {{ object.oferta }}€</p> 
-    <p> <img src="/media/{{ object.imagen }}" alt="imagen del producto"></p>
-    <p>ingredientes:
-        {% for ingre in object.ingrediente.all %}
-            {{ ingre.nombre }},
-        {% endfor %}
-    </p>
+    <h1 class="text-center mb-4">Producto</h1>
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading mb-4 text-center">{{ object.nombre }}</h2>
+        <p><b>Precio:</b> {{ object.precio }}€</p>
+          {% if object.oferta %}
+              <p><b>Oferta:</b> {{ object.oferta }}€</p> 
+          {% endif %}
+          <p><b>ingredientes:</b>
+              {% for ingre in object.ingrediente.all %}
+                  {{ ingre.nombre }}, 
+              {% endfor %}
+          </p>
+      </div>
+      <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="/media/{{ object.imagen }}" alt="imagen del producto" data-holder-rendered="true">
+      </div>
+    </div>
+    {% for come in pro.object %}
+      <p>1</p>
+    {% endfor %}
+
 {% endblock %}

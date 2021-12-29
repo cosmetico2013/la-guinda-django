@@ -17,9 +17,31 @@ from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
 from laguindaapi import views
-from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCreateView, ProductoDeleteView, ProductoUpdateView, ComentarioListView, ComentarioCreateView, ComentarioDeleteView, ComentarioUpdateView, ComentarioDetailView, ValoracionUpdateView, ValoracionDetailView, ValoracionCreateView, ValoracionDeleteView, ValoracionListView
+from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCreateView, ProductoDeleteView, ProductoUpdateView
+from laguindaapi.views import ComentarioListView, ComentarioCreateView, ComentarioDeleteView, ComentarioUpdateView, ComentarioDetailView
+from laguindaapi.views import ValoracionUpdateView, ValoracionDetailView, ValoracionCreateView, ValoracionDeleteView, ValoracionListView
+from laguindaapi.views import Search_producto
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.views import LoginView, LogoutView
+
+from django.contrib.auth.models import User
+from rest_framework import routers, viewsets, serializers
+
+# contenido que proporciona la busqueda
+class UserSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = User
+        fields = ['url', 'username', 'email', 'is_staff']
+
+# vista para la api.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+# url configuracion
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
 
 
 urlpatterns = [
@@ -50,8 +72,18 @@ urlpatterns = [
     path('valoracion/<int:pk>/delete', ValoracionDeleteView.as_view(), name='valoracion-delete'),
 
     #  urls para django_registration
-    path('accounts/', include('django_registration.backends.activation.urls')),
+    path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+
+    path('login/', LoginView.as_view(template_name='laguindaapi/login.html'), name='login'),
+    path('logout/', LogoutView.as_view(template_name='laguindaapi/logout.html'), name='logout'),
+
+    #  url para api
+    path('', include(router.urls)),
+    path('api/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # urls para busqueda
+    path('search_producto/', Search_producto.as_view(), name='search_producto')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
