@@ -20,19 +20,19 @@ class ProductoCreateView(PermissionRequiredMixin,CreateView):
     model = Producto
     success_url= reverse_lazy("producto-list")
     fields = ['nombre','precio','oferta','imagen','ingrediente']
-    permission_required='laguindaapi.add_choice'
+    permission_required='laguindaapi.add_Producto'
 
 class ProductoUpdateView(PermissionRequiredMixin,UpdateView):
     model = Producto
     success_url= reverse_lazy("producto-list")
     fields = ['nombre','precio','oferta','imagen','ingrediente']
     template_name_suffix = '_update_form'
-    permission_required='laguindaapi.change_choice'
+    permission_required='laguindaapi.change_Producto'
 
 class ProductoDeleteView(PermissionRequiredMixin,DeleteView):
     model = Producto
     success_url = reverse_lazy('producto-list')
-    permission_required='laguindaapi.delete_choice'
+    permission_required='laguindaapi.delete_Producto'
 
 class ProductoDetailView(DetailView):
     model = Producto
@@ -96,6 +96,7 @@ class ValoracionDeleteView(PermissionRequiredMixin,DeleteView):
     model = Valoracion
     success_url = reverse_lazy('comentario-list')
     permission_required='laguindaapi.delete_choice'
+
 
 # busqueda para productos
 class Search_producto(ListView):

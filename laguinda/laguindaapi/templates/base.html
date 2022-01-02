@@ -23,21 +23,8 @@
                     </li>
                 </ul>
                 <form class="form-inline mt-2 mt-md-0" action="{% url 'search_producto' %}" method="get">
-                    <input type="search" name="q" placeholder="Search by name or quote..." class="form-control form-control mr-sm-2" />
+                    <input type="search" name="q" placeholder="buscar producto" class="form-control form-control mr-sm-2" />
                 </form>
-                <!--
-                <form class="form-inline mt-2 mt-md-0" action="{% url 'search_producto' %}" method="get">
-                    <input class="form-control mr-sm-2" mame="q" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" mame="q" type="submit">Search</button>
-                </form>
-                -->
-                <!--
-                <form class="form-inline my-2 my-md-0" method="POST" style="text-align: right;" action="{% url 'search_producto' %}">
-                    {% csrf_token %}
-                    <input class="form-control" type="search" placeholder="Buscar Producto" aria-label="Search" name="searched">
-                    <button class="btn btn-outline-secondary" type="submit">Buscar</button>
-                </form>
-                -->
                 <ul class="navbar-nav">
                     {% if user.is_authenticated %}
                     <li class="nav-item">

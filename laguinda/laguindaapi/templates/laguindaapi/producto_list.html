@@ -27,16 +27,5 @@
             </div>
         </div>
         {% endfor %}
-        <!-- <ul>
-            {% for Producto in object_list %}
-                <li> <a href=" {% url 'producto-detail' Producto.id %} ">{{ Producto.nombre }}</a>
-                    <img src="/media/{{ Producto.imagen }}" alt="imagen producto">
-                    {% if user.is_staff %}
-                    <a href=" {% url 'producto-update' Producto.id %} ">EDID</a>
-                    <a href=" {% url 'producto-delete' Producto.id %} ">BORRAR</a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul> -->
     </div>
 {% endblock %}
