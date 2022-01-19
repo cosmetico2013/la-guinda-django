@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if user == valoracion.user or user.is_staff %}
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Update">
     </form>
+{% else %}
+<h1>No tienes Permisos para Editar "{{ object }}"</h1>
+{% endif %}
 {% endblock %}

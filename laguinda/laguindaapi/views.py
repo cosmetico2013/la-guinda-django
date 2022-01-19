@@ -1,11 +1,14 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.urls.base import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from laguindaapi.models import Producto, Comentario, Valoracion
 from django.db.models import Q
+from django.core.exceptions import PermissionDenied
 # vistas para index
 
 def index(request):
@@ -47,7 +50,7 @@ class ComentarioDetailView(DetailView):
     model = Comentario
 
 class ComentarioCreateView(LoginRequiredMixin,CreateView):
-    login_url = '/login/'
+    login_url = 'login'
 #    redirect_field_name = 'redirect_to'
     success_url= reverse_lazy("comentario-list")
     model = Comentario
@@ -56,17 +59,22 @@ class ComentarioCreateView(LoginRequiredMixin,CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class ComentarioUpdateView(PermissionRequiredMixin,UpdateView):
+class ComentarioUpdateView(LoginRequiredMixin,UpdateView):
+    login_url = 'login'
     model = Comentario
     success_url= reverse_lazy("comentario-list")
     fields = ['valoproduc','cabecera','texto']
     template_name_suffix = '_update_form'
-    permission_required='laguindaapi.change_choice'
+    def form_valid(self, form):
+        if form.instance.user == self.request.user or self.request.user.is_staff:
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied
 
-class ComentarioDeleteView(PermissionRequiredMixin,DeleteView):
+class ComentarioDeleteView(LoginRequiredMixin,DeleteView):
+    login_url = 'login'
     model = Comentario
     success_url = reverse_lazy('comentario-list')
-    permission_required='laguindaapi.delete_choice'
 
 # vistas para Valoraciones
 class ValoracionListView(ListView):
@@ -76,7 +84,7 @@ class ValoracionDetailView(DetailView):
     model = Valoracion
 
 class ValoracionCreateView(LoginRequiredMixin,CreateView):
-    login_url = '/login/'
+    login_url = 'login'
     #redirect_field_name = 'redirect_to'
     success_url= reverse_lazy("valoracion-list")
     model = Valoracion
@@ -85,18 +93,24 @@ class ValoracionCreateView(LoginRequiredMixin,CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-class ValoracionUpdateView(PermissionRequiredMixin,UpdateView):
+
+class ValoracionUpdateView(LoginRequiredMixin,UpdateView):
+    login_url = 'login'
     model = Valoracion
     success_url= reverse_lazy("valoracion-list")
     fields = ['valoproduc','puntuacion']
     template_name_suffix = '_update_form'
-    permission_required='laguindaapi.change_choice'
+    def form_valid(self, form):
+        if form.instance.user == self.request.user or self.request.user.is_staff:
+            return super().form_valid(form)
+        else:
+            raise PermissionDenied
 
-class ValoracionDeleteView(PermissionRequiredMixin,DeleteView):
+class ValoracionDeleteView(LoginRequiredMixin,DeleteView):
+    login_url = 'login'
     model = Valoracion
-    success_url = reverse_lazy('comentario-list')
-    permission_required='laguindaapi.delete_choice'
-
+    success_url = reverse_lazy('valoracion-list')
+    
 
 # busqueda para productos
 class Search_producto(ListView):

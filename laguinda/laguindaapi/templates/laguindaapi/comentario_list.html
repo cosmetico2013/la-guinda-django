@@ -8,8 +8,10 @@
     <ul>
         {% for comentario in object_list %}
             <li> <a href=" {% url 'comentario-detail' comentario.id %} ">{{ comentario.cabecera }}</a>
+                {% if user == comentario.user or user.is_staff %}
                 <a href=" {% url 'comentario-update' comentario.id %} ">EDID</a>
                 <a href=" {% url 'comentario-delete' comentario.id %} ">BORRAR</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

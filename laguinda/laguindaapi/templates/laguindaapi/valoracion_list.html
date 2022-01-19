@@ -10,8 +10,10 @@
     <ul>
         {% for valoracion in object_list %}
             <li><a href=" {% url 'valoracion-detail' valoracion.pk %} ">{{ valoracion.valoproduc }}</a>
+                {% if user == valoracion.user or user.is_staff %}
                 <a href=" {% url 'valoracion-update' valoracion.pk %} ">EDID</a>
                 <a href=" {% url 'valoracion-delete' valoracion.pk %} ">BORRAR</a>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

@@ -23,6 +23,7 @@ from laguindaapi.views import ValoracionUpdateView, ValoracionDetailView, Valora
 from laguindaapi.views import Search_producto
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView, LogoutView
 
 from django.contrib.auth.models import User
@@ -75,8 +76,9 @@ urlpatterns = [
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
-    path('login/', LoginView.as_view(template_name='laguindaapi/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(template_name='laguindaapi/logout.html'), name='logout'),
+    #path('accounts/login/', auth_views.LoginView.as_view(template_name='django_registration/login.html'), name='login'),
+    #path('login/', LoginView.as_view(template_name='laguindaapi/login.html'), name='login'),
+    path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
 
     #  url para api
     path('', include(router.urls)),

@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% if user == valoracion.user or user.is_staff %}
     <form method="post">{% csrf_token %}
         <p>Are you sure you want to delete "{{ object }}"?</p>
         <input type="submit" value="Confirm">
     </form>
+{% else %}
+<h1>No tienes Permisis para borrar "{{ object }}"</h1>
+{% endif %}
 {% endblock %}
