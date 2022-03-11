@@ -12,15 +12,9 @@
             <a class="navbar-brand" href="/">Inicio</a>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <!--<li class="nav-item active">
                         <a class="nav-link" href="/producto/">Producto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/comentario/">Comentario</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/valoracion/">Valoracion</a>
-                    </li>
+                    </li>-->
                 </ul>
                 <form class="form-inline mt-2 mt-md-0" action="{% url 'search_producto' %}" method="get">
                     <input type="search" name="q" placeholder="buscar producto" class="form-control form-control mr-sm-2" />
@@ -43,9 +37,16 @@
                     {% endif %}
                 </ul>
             </div>
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </nav>
         <div class="container py-5">
             {% block content %}{% endblock %}
         </div>
+        <main>
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="/media/js/bootstrap.min.js"></script>
+        </main>
     </body>
 </html>

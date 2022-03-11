@@ -49,26 +49,26 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     #  urls para el index
-    path('', views.index, name='index.html'),
+    #path('', views.index, name='index.html'),
 
     #  urls para productos
-    path('producto/', ProductoListView.as_view(), name='producto-list' ),
+    path('', ProductoListView.as_view(), name='producto-list' ),
     path('producto/<int:pk>/', ProductoDetailView.as_view(), name='producto-detail'),
     path('producto/add/', ProductoCreateView.as_view(), name='producto-add'),
     path('producto/<int:pk>/update/', ProductoUpdateView.as_view(), name='producto-update'),
     path('producto/<int:pk>/delete/', ProductoDeleteView.as_view(), name='producto-delete'),
 
     #  urls para comentarios
-    path('comentario/', ComentarioListView.as_view(), name='comentario-list'),
+    #path('comentario/', ComentarioListView.as_view(), name='comentario-list'),
     path('comentario/<int:pk>/', ComentarioDetailView.as_view(), name='comentario-detail'),
-    path('comentario/add/', ComentarioCreateView.as_view(), name='comentario-add'),
+    path('comentario/add/<int:pk>/', ComentarioCreateView.as_view(), name='comentario-add'),
     path('comentario/<int:pk>/update/', ComentarioUpdateView.as_view(), name='comentario-update'),
     path('comentario/<int:pk>/delete/', ComentarioDeleteView.as_view(), name='comentario-delete'),
 
     #  urls para valoraciones
-    path('valoracion/', ValoracionListView.as_view(), name='valoracion-list'),
+    #path('valoracion/', ValoracionListView.as_view(), name='valoracion-list'),
     path('valoracion/<int:pk>/', ValoracionDetailView.as_view(), name='valoracion-detail'),
-    path('valoracion/add', ValoracionCreateView.as_view(), name='valoracion-add'),
+    path('valoracion/add/<int:pk>/', ValoracionCreateView.as_view(), name='valoracion-add'),
     path('valoracion/<int:pk>/update', ValoracionUpdateView.as_view(), name='valoracion-update'),
     path('valoracion/<int:pk>/delete', ValoracionDeleteView.as_view(), name='valoracion-delete'),
 

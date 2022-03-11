@@ -17,7 +17,6 @@ class Oferta(models.Model):
 
 class Ingrediente(models.Model):
     nombre = models.CharField(max_length=100)
-
     def __str__(self):
         return self.nombre
 
@@ -27,6 +26,7 @@ class Producto(models.Model):
     oferta = models.ForeignKey('Oferta',on_delete=models.SET_NULL ,blank=True, null=True)
     ingrediente = models.ManyToManyField('Ingrediente')
     imagen = models.FileField(upload_to="img/")
+    media = models.DecimalField(max_digits=2, decimal_places=1, default=0)
 
     def __str__(self):
         return self.nombre
@@ -34,11 +34,10 @@ class Producto(models.Model):
 class Comentario(models.Model):
     valoproduc = models.ForeignKey('Producto', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    cabecera= models.CharField(max_length=100)
     texto = models.CharField(max_length=500)
 
     def __str__(self):
-        return self.cabecera
+        return  (str(self.user)+" "+self.valoproduc.nombre)
 
 class Valoracion(models.Model):
     valoproduc = models.ForeignKey('Producto', on_delete=models.CASCADE)
