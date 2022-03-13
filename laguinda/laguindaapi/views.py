@@ -42,14 +42,14 @@ class ProductoDetailView(DetailView):
     def get_object(self):
         obj = super().get_object()
         valos= obj.valoracion_set.all()
-        pru=valos.filter(user=self.request.user)
         if len(valos) != 0:
             cuenta=0
             for punto in valos:
                 cuenta+=int(punto.puntuacion)
-            obj.media = int(cuenta)/len(valos)
-            obj.save()
-            obj=Producto.objects.get(nombre=obj)
+            if not obj.media == int(cuenta)/len(valos):
+                obj.media = int(cuenta)/len(valos)
+                obj.save()
+                obj=Producto.objects.get(nombre=obj)
         sale=obj
         return sale
 
@@ -67,23 +67,22 @@ class ComentarioCreateView(LoginRequiredMixin,CreateView):
     fields = ['texto']
     def form_valid(self, form):
         url=self.request.get_full_path()
-        urlcad=url.split("/")
-        objeto=Producto.objects.get(pk=int(urlcad[3]))
+        urllist=url.split("/")
+        objeto=Producto.objects.get(pk=int(urllist[3]))
         form.instance.valoproduc = objeto
         form.instance.user = self.request.user
         form.save()
-        return redirect('producto-detail', pk=urlcad[3])
-#        return super().form_valid(form)
+        return redirect('producto-detail', pk=urllist[3])
 
 class ComentarioUpdateView(LoginRequiredMixin,UpdateView):
     login_url = 'login'
     model = Comentario
-    success_url= reverse_lazy("producto-list")
     fields = ['texto']
     template_name_suffix = '_update_form'
     def form_valid(self, form):
         if form.instance.user == self.request.user or self.request.user.is_staff:
-            return super().form_valid(form)
+            form.save()
+            return redirect('producto-detail', pk=form.instance.valoproduc.pk)
         else:
             raise PermissionDenied
 
@@ -102,8 +101,6 @@ class ValoracionDetailView(DetailView):
 
 class ValoracionCreateView(LoginRequiredMixin,CreateView):
     login_url = 'login'
-    #redirect_field_name = 'redirect_to'
-    success_url= reverse_lazy("producto-list")
     model = Valoracion
     fields = ['puntuacion']
     def form_valid(self, form):
@@ -112,23 +109,24 @@ class ValoracionCreateView(LoginRequiredMixin,CreateView):
         objeto=Producto.objects.get(pk=int(urlcad[3]))
         form.instance.valoproduc = objeto
         form.instance.user = self.request.user
-        list = Valoracion.objects.get(user=self.request.user, valoproduc=objeto)
-        print("HOLA QUE TALL        ESTAS")
-        print(list)
-        form.save()
-        return redirect('producto-detail', pk=urlcad[3])
+        list = Valoracion.objects.filter(user=self.request.user, valoproduc=objeto)
+        if len(list) == 0:
+            form.save()
+            return redirect('producto-detail', pk=urlcad[3])
+        else:
+            raise PermissionDenied
             
 
 
 class ValoracionUpdateView(LoginRequiredMixin,UpdateView):
     login_url = 'login'
     model = Valoracion
-    success_url= reverse_lazy("producto-list")
     fields = ['puntuacion']
     template_name_suffix = '_update_form'
     def form_valid(self, form):
         if form.instance.user == self.request.user or self.request.user.is_staff:
-            return super().form_valid(form)
+            form.save()
+            return redirect('producto-detail', pk=form.instance.valoproduc.pk)
         else:
             raise PermissionDenied
 

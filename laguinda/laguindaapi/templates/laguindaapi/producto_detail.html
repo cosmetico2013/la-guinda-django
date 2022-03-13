@@ -18,9 +18,10 @@
           </p>
           <p><b>Puntuacion</b>
               {{ object.media }}/5
-              <a href=" {% url 'valoracion-add' object.id  %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+              {% if user.is_authenticated %}
+                <a href=" {% url 'valoracion-add' object.id  %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+              {% endif %}
           </p>
-          {% with p=0 %}
           {% for valo in object.valoracion_set.all %}
             {% if valo.user == user %}
               <p> <b>Tu valoracion</b>
@@ -29,10 +30,7 @@
                 <a href=" {% url 'valoracion-delete' valo.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
               </p>
             {% endif %}
-          {% endfor %}
-          <p>{{ p }}</p>
-          {% endwith %}
-          
+          {% endfor %}       
       </div>
       <div class="col-md-5">
         <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="/media/{{ object.imagen }}" alt="imagen del producto" data-holder-rendered="true">
