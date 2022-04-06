@@ -19,7 +19,9 @@
           <p><b>Puntuacion</b>
               {{ object.media }}/5
               {% if user.is_authenticated %}
+                {% if not valorado %}
                 <a href=" {% url 'valoracion-add' object.id  %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+                {% endif %}
               {% endif %}
           </p>
           {% for valo in object.valoracion_set.all %}
@@ -30,7 +32,7 @@
                 <a href=" {% url 'valoracion-delete' valo.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
               </p>
             {% endif %}
-          {% endfor %}       
+          {% endfor %}
       </div>
       <div class="col-md-5">
         <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500" style="width: 500px; height: 500px;" src="/media/{{ object.imagen }}" alt="imagen del producto" data-holder-rendered="true">

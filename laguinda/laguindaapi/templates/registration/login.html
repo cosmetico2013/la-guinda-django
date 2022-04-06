@@ -15,24 +15,19 @@
     <p>Please login to see this page.</p>
     {% endif %}
 {% endif %}
-
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
-
-<input type="submit" value="login">
-<input type="hidden" name="next" value="{{ next }}">
-</form>
-
+<div class="text-center">
+    <form method="post" action="{% url 'login' %}">
+        <img class="mb-4" src="/media/img/logo.png" alt="" width="72" height="72">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <p>{{ form.username }}</p>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <p>{{ form.password }}</p>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="login">
+        <input type="hidden" name="next" value="{{ next }}">
+    </form>
+</div>
 {# Assumes you setup the password_reset view in your URLconf #}
 <!--<p><a href="{% url 'password_reset' %}">Lost password?</a></p>-->
 

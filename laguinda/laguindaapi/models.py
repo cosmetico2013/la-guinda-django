@@ -2,7 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from django.utils import timezone
 from django.contrib.auth.models import User
-
+from django_google_maps import fields as map_fields
 
 PUNTUACION=[(1,1),(2,2),(3,3),(4,4),(5,5)]
 
@@ -46,3 +46,13 @@ class Valoracion(models.Model):
 
     def __str__(self):
         return str(self.puntuacion)
+
+class Tienda(models.Model):
+    nombre = models.CharField(max_length=50)
+    descripcion = models.CharField(max_length=2000)
+    url = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.nombre
+        
+#https://www.google.com/maps/place/Pasteler%C3%ADa+La+Guinda/@36.471586,-6.1922979,19.29z/data=!4m8!1m2!2m1!1sgeolocalizacion!3m4!1s0xd0dcce08c134d7b:0xecc88bd08d92e28b!8m2!3d36.4717928!4d-6.1922364

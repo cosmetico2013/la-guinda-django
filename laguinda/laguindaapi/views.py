@@ -6,7 +6,7 @@ from django.urls.base import reverse
 from django.views.generic import ListView, DetailView
 from django.views.generic.base import TemplateResponseMixin
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from laguindaapi.models import Producto, Comentario, Valoracion
+from laguindaapi.models import Producto, Comentario, Valoracion, Tienda
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 # vistas para index
@@ -52,12 +52,19 @@ class ProductoDetailView(DetailView):
                 obj=Producto.objects.get(nombre=obj)
         sale=obj
         return sale
+    def get_context_data(self, **kwargs):
+        context = super(ProductoDetailView, self).get_context_data(**kwargs)
+        if not self.request.user.is_anonymous:
+            list = Valoracion.objects.filter(user=self.request.user, valoproduc=super().get_object())
+            if len(list) == 0:
+                context['valorado'] = False
+            else:   
+                context['valorado'] = True
+        #return super().get_context_data(**kwargs)
+        return context
 
 
 # vistas para comentarios
-class ComentarioListView(ListView):
-    model = Comentario
-
 class ComentarioDetailView(DetailView):
     model = Comentario
 
@@ -93,9 +100,6 @@ class ComentarioDeleteView(LoginRequiredMixin,DeleteView):
 
 
 # vistas para Valoraciones
-class ValoracionListView(ListView):
-    model = Valoracion
-
 class ValoracionDetailView(DetailView):
     model = Valoracion
 
@@ -115,8 +119,19 @@ class ValoracionCreateView(LoginRequiredMixin,CreateView):
             return redirect('producto-detail', pk=urlcad[3])
         else:
             raise PermissionDenied
-            
-
+    def get_context_data(self, **kwargs):
+        url=self.request.get_full_path()
+        urlcad=url.split("/")
+        objeto=Producto.objects.get(pk=int(urlcad[3]))
+        context = super(ValoracionCreateView, self).get_context_data(**kwargs)
+        if not self.request.user.is_anonymous:
+            list = Valoracion.objects.filter(user=self.request.user, valoproduc=objeto)
+            if len(list) == 0:  
+                context['valorado'] = False
+            else:   
+                context['valorado'] = True
+        #return super().get_context_data(**kwargs)
+        return context
 
 class ValoracionUpdateView(LoginRequiredMixin,UpdateView):
     login_url = 'login'
@@ -144,3 +159,8 @@ class Search_producto(ListView):
         query = self.request.GET.get("q")
         object_list = Producto.objects.filter( Q (nombre__icontains=query))
         return object_list
+
+
+#tienda
+class TiendaListView(ListView):
+    model = Tienda

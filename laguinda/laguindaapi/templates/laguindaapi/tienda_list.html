@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for tienda in object_list %}
+        <p>{{ tienda.nombre }}</p>
+        <p>{{ tienda.descripcion }}</p>
+        <a href="{{ tienda.url }}">Ubicacion</a>
+    {% endfor %}
+{% endblock %}

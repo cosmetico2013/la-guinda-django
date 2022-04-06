@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django_registration',
     'rest_framework',
     'bootstrap4',
+    'django_google_maps',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,5 @@ REST_FRAMEWORK = {
 }
 
 LOGIN_REDIRECT_URL='/'
+
+GOOGLE_MAPS_API_KEY=''
