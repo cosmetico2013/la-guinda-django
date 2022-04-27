@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if user.is_staff %}
+    {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+    {% endif %}
+        {% if object.Fecha_Terminado %}
+        <p>Seguro que desea indicar que el encargo no esta terminado</p>
+        {% else %}
+        <p>Seguro que desea indicar que el encargo esta terminado</p>
+        {% endif %}
+        <form enctype="multipart/form-data" method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Finalizar">
+        </form>
+    {% else %}
+        <p>Usted no tiene permisos suficientes</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if not object.reserva.Fecha_Entrega or user.is_staff %}
+        {% if not entregado %}
+            <form enctype="multipart/form-data" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Save">
+            </form>
+        {% else %}
+            <p>ya se ha finalaizo esta entrega</p>
+        {% endif %}
+    {% else %}
+        <p>No pudes modificar el encargo una vez as indicado la fecha de entrega</p>
+    {% endif %}
+{% endblock %}

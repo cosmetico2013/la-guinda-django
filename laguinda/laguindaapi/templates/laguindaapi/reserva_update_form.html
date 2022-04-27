@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if not object.Fecha_Entrega or user.is_staff %}
+        {% if not object.costo == 0 %}
+            <p>La fecha debe de introducirse de esta forma "DD/MM/AAAA HH:MM:SS" el tiempo mínimo de reserva será de 3 días.</p>
+            <form enctype="multipart/form-data" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Finalizar">
+            </form>
+        {% else %}
+            <p>Su reserva no tiene ningún coste, porfavor introduzca algún producto en la reserva.</p>
+        {% endif %}
+    {% else %}
+    <p>no se puede modificar la fecha de entrega una vez elegida</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+{% block content %}
+{% if user.is_staff %}
+    <h2 class="text-center mb-4" >Reserva</h2>
+    <div class="row">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            {% for Reserva in object_list %}
+                {% if Reserva.Fecha_Entrega > fecha %}
+                    {% if Reserva.Fecha_Terminado %}
+                        <div class="d-flex text-muted pt-3">
+                            <p class="pb-3 mb-0 small lh-sm border-bottom" style="color: green;">
+                                <strong class="d-block text-gray-dark grewn">@{{ Reserva.user }} </strong>
+                                {{ Reserva.Fecha_Entrega }}
+                            </p>
+                            <p class="pt-3 mb-0 small lh-sm border-bottom">
+                                <a href=" {% url 'reserva-detail' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Ver</button></a>
+                                <a href=" {% url 'pendiente-update' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-danger"> No Hecho</button></a>
+                            </p>
+                        </div>
+                    {% else %}
+                        <div class="d-flex text-muted pt-3">
+                            <p class="pb-3 mb-0 small lh-sm border-bottom" style="color: red;">
+                                <strong class="d-block text-gray-dark grewn">@{{ Reserva.user }} </strong>
+                                {{ Reserva.Fecha_Entrega }}
+                            </p>
+                            <p class="pt-3 mb-0 small lh-sm border-bottom">
+                                <a href=" {% url 'reserva-detail' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Ver</button></a>
+                                <a href=" {% url 'pendiente-update' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-success">Hecho</button></a>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <p>Usted no tiene permisos suficientes</p>
+{% endif %}
+{% endblock %}

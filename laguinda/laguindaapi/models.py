@@ -1,8 +1,6 @@
 from django.db import models
-from django.forms import ModelForm
 from django.utils import timezone
 from django.contrib.auth.models import User
-from django_google_maps import fields as map_fields
 
 PUNTUACION=[(1,1),(2,2),(3,3),(4,4),(5,5)]
 
@@ -30,7 +28,7 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
-        
+
 class Comentario(models.Model):
     valoproduc = models.ForeignKey('Producto', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -54,5 +52,22 @@ class Tienda(models.Model):
 
     def __str__(self):
         return self.nombre
-        
-#https://www.google.com/maps/place/Pasteler%C3%ADa+La+Guinda/@36.471586,-6.1922979,19.29z/data=!4m8!1m2!2m1!1sgeolocalizacion!3m4!1s0xd0dcce08c134d7b:0xecc88bd08d92e28b!8m2!3d36.4717928!4d-6.1922364
+
+class Reserva(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    costo = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    Fecha_Pedido = models.DateTimeField(blank=True, null=True)
+    Fecha_Entrega = models.DateTimeField(blank=True, null=True)
+    Fecha_Terminado = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.user) +" "+ str(self.Fecha_Pedido)
+
+class Encargo(models.Model):
+    reserva = models.ForeignKey('Reserva', on_delete=models.CASCADE)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
+    cantidad = models.DecimalField(max_digits=3,decimal_places=0, default=0)
+    costo = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+
+    def __str__(self):
+        return str(self.reserva)+" "+ str(self.producto)+" "+ str(self.cantidad)

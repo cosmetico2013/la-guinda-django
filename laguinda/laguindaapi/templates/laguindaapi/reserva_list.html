@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h2 class="text-center mb-4" >Reserva
+    <a href=" {% url 'reserva-add' %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+    </h2>
+    <div class="row">
+        <div class="my-3 p-3 bg-body rounded shadow-sm">
+            {% for Reserva in object_list %}
+            <div class="d-flex text-muted pt-3">
+              <p class="pb-3 mb-0 small lh-sm border-bottom">
+                <strong class="d-block text-gray-dark">@{{ Reserva.user }} </strong>
+                {{ Reserva.Fecha_Pedido }}
+              </p>
+            {% if Reserva.Fecha_Entrega %}
+                <p class="pt-3 mb-0 small lh-sm border-bottom">
+                    <a href=" {% url 'reserva-detail' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Ver</button></a>
+                </p>
+            {% else %}
+                {% if user.is_staff or user == Reserva.user %}
+                <p class="pt-3 mb-0 small lh-sm border-bottom">
+                    <a href=" {% url 'reserva-detail' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+                    {% if not Reserva.costo == 0 %}
+                        <a href=" {% url 'reserva-update' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-success">Finalizar</button></a>
+                    {% endif %}
+                    <a href=" {% url 'reserva-delete' Reserva.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
+                </p>
+                {% endif %}
+            {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

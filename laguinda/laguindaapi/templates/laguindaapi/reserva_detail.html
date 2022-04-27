@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if user.is_staff or user == object.user %}
+        {% if user.is_staff %}
+            <p><b>usuario:</b> {{ object.user }}</p>
+        {% endif %}
+        {% if object.Fecha_Entrega %}
+            <p><b>Fecha de Entrega:</b> {{ object.Fecha_Entrega }}</p>
+        {% endif %}
+        <p class="text-center"><b> Encargos
+            {% if not object.Fecha_Entrega %}
+            <a href=" {% url 'encargo-add' object.id %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+            {% endif %}
+            </b>
+        </p>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Coste</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for encargo in object.encargo_set.all %}
+                    <tr>
+                        <td>{{ encargo.producto }}</td>
+                        <td>{{ encargo.cantidad }}
+                            {% if not object.Fecha_Entrega %}
+                                <a href=" {% url 'encargo-update' encargo.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+                                <a href=" {% url 'encargo-delete' encargo.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
+                            {% endif %}
+                        </td>
+                        <td>{{ encargo.costo }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th colspan="2"><b>Coste total</b></th>
+                    <th><b>{{ object.costo }}€</b></th>
+                </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <p>Usted no tiene permisos suficientes</p>
+    {% endif %}
+{% endblock %}

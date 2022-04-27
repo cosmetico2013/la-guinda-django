@@ -5,6 +5,9 @@ from laguindaapi import views
 from laguindaapi.views import ProductoListView, ProductoDetailView, ProductoCreateView, ProductoDeleteView, ProductoUpdateView
 from laguindaapi.views import ComentarioCreateView, ComentarioDeleteView, ComentarioUpdateView, ComentarioDetailView
 from laguindaapi.views import ValoracionUpdateView, ValoracionDetailView, ValoracionCreateView, ValoracionDeleteView, TiendaListView
+from laguindaapi.views import ReservaCreateView, ReservaListView, ReservaDetailView, ResevaUpdateView, ReservaDeleteView
+from laguindaapi.views import EncargoCreateView, EncargoDeleteView, EncargoUpdateView
+from laguindaapi.views import PendienteListView, PendienteUpdateView
 from laguindaapi.views import Search_producto
 from django.conf import settings
 from django.conf.urls.static import static
@@ -55,6 +58,22 @@ urlpatterns = [
     path('valoracion/add/<int:pk>/', ValoracionCreateView.as_view(), name='valoracion-add'),
     path('valoracion/<int:pk>/update', ValoracionUpdateView.as_view(), name='valoracion-update'),
     path('valoracion/<int:pk>/delete', ValoracionDeleteView.as_view(), name='valoracion-delete'),
+
+    #  urls para reserva
+    path('reserva/', ReservaListView.as_view(), name='reserva-list' ),
+    path('reserva/<int:pk>/', ReservaDetailView.as_view(), name='reserva-detail' ),
+    path('reserva/add', ReservaCreateView.as_view(), name='reserva-add' ),
+    path('reserva/<int:pk>/update', ResevaUpdateView.as_view(), name='reserva-update'),
+    path('reserva/<int:pk>/delete', ReservaDeleteView.as_view(), name='reserva-delete'),
+
+    #  urls para encargo
+    path('encargo/add/<int:pk>', EncargoCreateView.as_view(), name='encargo-add'),
+    path('encargo/<int:pk>/update', EncargoUpdateView.as_view(), name='encargo-update'),
+    path('encargo/<int:pk>/delete', EncargoDeleteView.as_view(), name='encargo-delete'),
+
+    #  urls para reserva pendiente
+    path('reserva/pendientes', PendienteListView.as_view(), name='pendiente-list'),
+    path('reserva/pendientes/<int:pk>/update', PendienteUpdateView.as_view(), name='pendiente-update'),
 
     #  urls para django_registration
     path('accounts/', include('django_registration.backends.one_step.urls')),

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if not propietario or user.is_staff %}
+        {% if not entregado %}
+            <form enctype="multipart/form-data" method="post">{% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Save">
+            </form>
+        {% else %}
+            <p>ya se ha finalaizo esta entrega</p>
+        {% endif %}
+    {% else %}
+        <p>Usted no es el propietario</p>
+    {% endif %}
+{% endblock %}
