@@ -4,21 +4,21 @@
 {% block content %}
     <h2 class="text-center mb-4" >Producto 
         {% if user.is_staff %}
-        <a href=" {% url 'producto-add' %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+        <a href=" {% url 'Producto-add' %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
         {% endif %}
     </h2>
     <div class="row">
         {% for Producto in object_list %}
         <div class="col-md-4">
             <div class="card mb-4 box-shadow">
-                <a href=" {% url 'producto-detail' Producto.id %} "><img style="height: 225px; width: 100%; display: block;" src="/media/{{ Producto.imagen }}" alt="imagen producto"></a>
-                <div class="card-body">
+                <a href=" {% url 'Producto-detail' Producto.id %} "><img style="height: 225px; width: 100%; display: block;" src="/media/{{ Producto.imagen }}" alt="imagen producto"></a>
+                <div class="card-body" style="background-color: #EED6BE;">
                     <p class="card-text text-center">{{ Producto.nombre }}</p>
                     {% if user.is_staff %}
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
-                            <a href=" {% url 'producto-update' Producto.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
-                            <a href=" {% url 'producto-delete' Producto.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
+                            <a href=" {% url 'Producto-update' Producto.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+                            <a href=" {% url 'Producto-delete' Producto.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
                         </div>
                     </div>
                     {% endif %}

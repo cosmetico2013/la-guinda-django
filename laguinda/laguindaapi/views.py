@@ -9,6 +9,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from laguindaapi.models import Producto, Comentario, Valoracion, Tienda, Reserva, Encargo
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
+from tempus_dominus.widgets import DateTimePicker
 # vistas para index
 
 def index(request):
@@ -18,23 +19,26 @@ def index(request):
 # vistas para productos
 class ProductoListView(ListView):
     model = Producto
+    def get_queryset (self):
+        object_list = Producto.objects.order_by("-media")
+        return object_list
 
 class ProductoCreateView(PermissionRequiredMixin,CreateView):
     model = Producto
-    success_url= reverse_lazy("producto-list")
+    success_url= reverse_lazy("Producto-list")
     fields = ['nombre','precio','oferta','imagen','ingrediente']
     permission_required='laguindaapi.add_Producto'
 
 class ProductoUpdateView(PermissionRequiredMixin,UpdateView):
     model = Producto
-    success_url= reverse_lazy("producto-list")
+    success_url= reverse_lazy("Producto-list")
     fields = ['nombre','precio','oferta','imagen','ingrediente']
     template_name_suffix = '_update_form'
     permission_required='laguindaapi.change_Producto'
 
 class ProductoDeleteView(PermissionRequiredMixin,DeleteView):
     model = Producto
-    success_url = reverse_lazy('producto-list')
+    success_url = reverse_lazy('Producto-list')
     permission_required='laguindaapi.delete_Producto'
 
 class ProductoDetailView(DetailView):
@@ -78,7 +82,7 @@ class ComentarioCreateView(LoginRequiredMixin,CreateView):
         form.instance.valoproduc = objeto
         form.instance.user = self.request.user
         form.save()
-        return redirect('producto-detail', pk=urllist[3])
+        return redirect('Producto-detail', pk=urllist[3])
 
 class ComentarioUpdateView(LoginRequiredMixin,UpdateView):
     login_url = 'login'
@@ -88,14 +92,14 @@ class ComentarioUpdateView(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         if form.instance.user == self.request.user or self.request.user.is_staff:
             form.save()
-            return redirect('producto-detail', pk=form.instance.valoproduc.pk)
+            return redirect('Producto-detail', pk=form.instance.valoproduc.pk)
         else:
             raise PermissionDenied
 
 class ComentarioDeleteView(LoginRequiredMixin,DeleteView):
     login_url = 'login'
     model = Comentario
-    success_url = reverse_lazy('producto-list')
+    success_url = reverse_lazy('Producto-list')
 
 
 # vistas para Valoraciones
@@ -115,7 +119,7 @@ class ValoracionCreateView(LoginRequiredMixin,CreateView):
         list = Valoracion.objects.filter(user=self.request.user, valoproduc=objeto)
         if len(list) == 0:
             form.save()
-            return redirect('producto-detail', pk=urlcad[3])
+            return redirect('Producto-detail', pk=urlcad[3])
         else:
             raise PermissionDenied
     def get_context_data(self, **kwargs):
@@ -145,14 +149,14 @@ class ValoracionUpdateView(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         if form.instance.user == self.request.user or self.request.user.is_staff:
             form.save()
-            return redirect('producto-detail', pk=form.instance.valoproduc.pk)
+            return redirect('Producto-detail', pk=form.instance.valoproduc.pk)
         else:
             raise PermissionDenied
 
 class ValoracionDeleteView(LoginRequiredMixin,DeleteView):
     login_url = 'login'
     model = Valoracion
-    success_url= reverse_lazy("producto-list")
+    success_url= reverse_lazy("Producto-list")
     
 
 # busqueda para productos
@@ -214,6 +218,18 @@ class ResevaUpdateView(LoginRequiredMixin,UpdateView):
     success_url= reverse_lazy("reserva-list")
     template_name_suffix = '_update_form'
     fields = ['Fecha_Entrega']
+    def get_form(self):
+        form = super().get_form()
+        form.fields['Fecha_Entrega'].widget = DateTimePicker(
+            options={
+                'useCurrent': True,
+                'collapse': False,
+            },
+            attrs={
+                'append': 'fa fa-calendar',
+                'icon_toggle': True,
+            })
+        return form
     def get_object(self):
         obj=super().get_object()
         if obj.user == self.request.user or self.request.user.is_staff:

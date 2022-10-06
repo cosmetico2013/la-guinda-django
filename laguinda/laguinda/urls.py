@@ -14,24 +14,44 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LoginView, LogoutView
 
-from django.contrib.auth.models import User
+from laguindaapi.models import Producto, Oferta, Ingrediente
 from rest_framework import routers, viewsets, serializers
 
-# contenido que proporciona la busqueda
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+# contenido que proporciona la busqueda en la API
+class OfertaSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'is_staff']
+        model = Oferta
+        fields = ['cantidad', 'precio']
 
-# vista para la api.
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+class OfertaViewSet(viewsets.ModelViewSet):
+    queryset = Oferta.objects.all()
+    serializer_class = OfertaSerializer
+
+
+class IngredienteSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Ingrediente
+        fields = ['nombre']
+
+class IngredienteViewSet(viewsets.ModelViewSet):
+    queryset = Ingrediente.objects.all()
+    serializer_class = IngredienteSerializer
+
+
+class ProductoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Producto
+        fields = ['nombre', 'precio', 'ingrediente', 'oferta','media']
+
+class ProductoViewSet(viewsets.ModelViewSet):
+    queryset = Producto.objects.all()
+    serializer_class = ProductoSerializer
 
 # url configuracion
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-
+router.register(r'producto-api', ProductoViewSet)
+router.register(r'oferta-api', OfertaViewSet) 
+router.register(r'ingrediente-api', IngredienteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,11 +61,11 @@ urlpatterns = [
     path('sobre-nosotros/', TiendaListView.as_view(), name='sobre-nosotros'),
 
     #  urls para productos
-    path('', ProductoListView.as_view(), name='producto-list' ),
-    path('producto/<int:pk>/', ProductoDetailView.as_view(), name='producto-detail'),
-    path('producto/add/', ProductoCreateView.as_view(), name='producto-add'),
-    path('producto/<int:pk>/update/', ProductoUpdateView.as_view(), name='producto-update'),
-    path('producto/<int:pk>/delete/', ProductoDeleteView.as_view(), name='producto-delete'),
+    path('', ProductoListView.as_view(), name='Producto-list' ),
+    path('producto/<int:pk>/', ProductoDetailView.as_view(), name='Producto-detail'),
+    path('producto/add/', ProductoCreateView.as_view(), name='Producto-add'),
+    path('producto/<int:pk>/update/', ProductoUpdateView.as_view(), name='Producto-update'),
+    path('producto/<int:pk>/delete/', ProductoDeleteView.as_view(), name='Producto-delete'),
 
     #  urls para comentarios
     path('comentario/<int:pk>/', ComentarioDetailView.as_view(), name='comentario-detail'),
@@ -78,14 +98,18 @@ urlpatterns = [
     #  urls para django_registration
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
 
     #path('accounts/login/', auth_views.LoginView.as_view(template_name='django_registration/login.html'), name='login'),
     #path('login/', LoginView.as_view(template_name='laguindaapi/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
 
+    # FIDO2
+    path('', include('django_fido.urls')),
+
     #  url para api
-    path('', include(router.urls)),
-    path('api/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # urls para busqueda
     path('search_producto/', Search_producto.as_view(), name='search_producto')

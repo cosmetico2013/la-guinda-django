@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,16 +20,28 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3!5g@ombbm(*f=#cd)%5o6ol*bf1-_@qnex#^#liufezgy#bda'
+#SECRET_KEY = 'django-insecure-3!5g@ombbm(*f=#cd)%5o6ol*bf1-_@qnex#^#liufezgy#bda'
+SECRET_KEY = os.environ['SECRET_KEY']
+
+#SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+#SECURE_HSTS_SECONDS = 60
+
+#SECURE_SSL_REDIRECT = True
+
+#SESSION_COOKIE_SECURE = True
+
+#CSRF_COOKIE_SECURE = True
+
+#SECURE_HSTS_PRELOAD = True
 
 ACCOUNT_ACTIVATION_DAYS = 70 # One-week activation window
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 #ALLOWED_HOSTS = ['10.1.2.132']
-
 
 # Application definition
 
@@ -39,12 +52,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'laguindaapi',
     'django_extensions',
     'django_registration',
     'rest_framework',
     'bootstrap4',
+    'tempus_dominus',
     'django_google_maps',
+    'django_fido',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'cookielaw',
+    'analytical',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +78,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'django_fido.backends.Fido2AuthenticationBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+    ]
 
 ROOT_URLCONF = 'laguinda.urls'
 
@@ -70,6 +98,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+#                'django.core.context_processors.request'
             ],
         },
     },
@@ -77,6 +106,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'laguinda.wsgi.application'
 
+SITE_ID = 2
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -142,6 +184,9 @@ MEDIA_ROOT = BASE_DIR / ".." / "static_env" / "media_root"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
@@ -149,3 +194,12 @@ REST_FRAMEWORK = {
 LOGIN_REDIRECT_URL='/'
 
 GOOGLE_MAPS_API_KEY=''
+
+MATOMO_DOMAIN_PATH = 'localhost:8001'
+MATOMO_SITE_ID = '4'
+'''context = Context({
+    'matomo_vars': [(1, 'foo', 'Sir Lancelot of Camelot'),
+                    (2, 'bar', 'To seek the Holy Grail', 'page'),
+                    (3, 'spam', 'Blue', 'visit')]
+})
+return some_template.render(context)'''

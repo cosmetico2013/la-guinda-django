@@ -28,6 +28,8 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
+    class Meta:
+        order_with_respect_to = 'media'
 
 class Comentario(models.Model):
     valoproduc = models.ForeignKey('Producto', on_delete=models.CASCADE)
