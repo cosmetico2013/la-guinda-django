@@ -13,8 +13,35 @@ class Oferta(models.Model):
     def __str__(self):
         return str(self.cantidad)+' x '+str(self.precio)
 
+class Alergenos(models.Model):
+    nombre = models.CharField(max_length=100)
+    def __str__(self):
+        return self.nombre
+
 class Ingrediente(models.Model):
     nombre = models.CharField(max_length=100)
+    alergenos = models.ManyToManyField('Alergenos')
+    '''Gluten = models.BooleanField(default=False)
+    Hevos = models.BooleanField(default=False)
+    Lacteos = models.BooleanField(default=False)
+    Cacahuetes = models.BooleanField(default=False)
+    frutos_secos = models.BooleanField(default=False)
+    Soja = models.BooleanField(default=False)
+    Crustaceos = models.BooleanField(default=False)
+    Pescado = models.BooleanField(default=False)
+    Moluscos = models.BooleanField(default=False)
+    Altramuces = models.BooleanField(default=False)
+    Sesamo = models.BooleanField(default=False)
+    Mostaza = models.BooleanField(default=False)
+    Sulfitos = models.BooleanField(default=False)
+    Apio = models.BooleanField(default=False)'''
+    def __str__(self):
+        return self.nombre
+
+class Componente(models.Model):
+    nombre = models.CharField(max_length=100)
+    ingrediente = models.ManyToManyField('Ingrediente')
+    alergenos = models.ManyToManyField('Alergenos')
     def __str__(self):
         return self.nombre
 
@@ -23,6 +50,7 @@ class Producto(models.Model):
     precio = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     oferta = models.ForeignKey('Oferta',on_delete=models.SET_NULL ,blank=True, null=True)
     ingrediente = models.ManyToManyField('Ingrediente')
+    componente = models.ManyToManyField('Componente')
     imagen = models.FileField(upload_to="img/")
     media = models.DecimalField(max_digits=2, decimal_places=1, default=0)
 

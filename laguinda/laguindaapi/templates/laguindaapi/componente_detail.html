@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>
+        Componente
+        <a href=" {% url 'ingrediente-update' object.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+        <a href=" {% url 'ingrediente-delete' object.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
+    </h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Ingredientes</th>
+                <th scope="col">Gluten</th>
+                <th scope="col">Hevos</th>
+                <th scope="col">Lacteos</th>
+                <th scope="col">Cacahuetes</th>
+                <th scope="col">frutos_secos</th>
+                <th scope="col">Soja</th>
+                <th scope="col">Crustaceos</th>
+                <th scope="col">Pescado</th>
+                <th scope="col">Moluscos</th>
+                <th scope="col">Altramuces</th>
+                <th scope="col">Sesamo</th>
+                <th scope="col">Mostaza</th>
+                <th scope="col">Sulfitos</th>
+                <th scope="col">Apio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">{{ object.nombre }}</th>
+
+                {% if object.ingrediente.all == "hola" %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                
+                {% if ingrediente.Hevos == True %}          <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Lacteos == True %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Cacahuetes == True %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.frutos_secos == True %}   <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Soja == True %}           <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Crustaceos == True %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Pescado == True %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Moluscos == True %}       <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Altramuces == True %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Sesamo == True %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Mostaza == True %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Sulfitos == True %}       <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                {% if ingrediente.Apio == True %}           <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+            </tr>
+        </tbody>
+    </table>
+    <h2> ingredientes</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Componentes</th>
+                <th scope="col">Gluten</th>
+                <th scope="col">Hevos</th>
+                <th scope="col">Lacteos</th>
+                <th scope="col">Cacahuetes</th>
+                <th scope="col">frutos_secos</th>
+                <th scope="col">Soja</th>
+                <th scope="col">Crustaceos</th>
+                <th scope="col">Pescado</th>
+                <th scope="col">Moluscos</th>
+                <th scope="col">Altramuces</th>
+                <th scope="col">Sesamo</th>
+                <th scope="col">Mostaza</th>
+                <th scope="col">Sulfitos</th>
+                <th scope="col">Apio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ingrediente in object.ingrediente.all %}
+                <tr>
+                    <th scope="row"><a href="{% url 'ingrediente-detail' ingrediente.id %}">{{ ingrediente.nombre }}</a></th>
+                        {% if ingrediente.Gluten == True %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Hevos == True %}          <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Lacteos == True %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Cacahuetes == True %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.frutos_secos == True %}   <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Soja == True %}           <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Crustaceos == True %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Pescado == True %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Moluscos == True %}       <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Altramuces == True %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Sesamo == True %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Mostaza == True %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Sulfitos == True %}       <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                        {% if ingrediente.Apio == True %}           <th class="text-center">X</th>{% else %}<td></td>{% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

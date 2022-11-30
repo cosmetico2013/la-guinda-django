@@ -8,6 +8,8 @@ from laguindaapi.views import ValoracionUpdateView, ValoracionDetailView, Valora
 from laguindaapi.views import ReservaCreateView, ReservaListView, ReservaDetailView, ResevaUpdateView, ReservaDeleteView
 from laguindaapi.views import EncargoCreateView, EncargoDeleteView, EncargoUpdateView
 from laguindaapi.views import PendienteListView, PendienteUpdateView
+from laguindaapi.views import Ingredientelistview, IngredienteDetailView, IngredienteCreateView, IngredienteUpdateView, IngredienteDeleteView
+from laguindaapi.views import ComponenteListView, ComponenteDetailView, ComponenteCreateView, ComponenteUpdateview, ComponenteDeleteView
 from laguindaapi.views import Search_producto
 from django.conf import settings
 from django.conf.urls.static import static
@@ -95,6 +97,20 @@ urlpatterns = [
     path('reserva/pendientes', PendienteListView.as_view(), name='pendiente-list'),
     path('reserva/pendientes/<int:pk>/update', PendienteUpdateView.as_view(), name='pendiente-update'),
 
+    #  urls para Ingredientes
+    path('ingrediente', Ingredientelistview.as_view(), name='ingrediente-list'),
+    path('ingrediente/<int:pk>', IngredienteDetailView.as_view(), name='ingrediente-detail'),
+    path('ingrediente/add', IngredienteCreateView.as_view(), name='ingrediente-add'),
+    path('ingrediente/<int:pk>/update', IngredienteUpdateView.as_view(), name='ingrediente-update'),
+    path('ingrediente/<int:pk>/delete', IngredienteDeleteView.as_view(), name='ingrediente-delete'),
+
+    #  urls para componenetes
+    path('componente', ComponenteListView.as_view(), name='componente-list'),
+    path('componente/<int:pk>', ComponenteDetailView.as_view(), name='componente-detail'),
+    path('componente/add', ComponenteCreateView.as_view(), name='componente-add'),
+    path('componente/<int:pk>/update', ComponenteUpdateview.as_view(), name='componete-update'),
+    path('componente/<int:pk>/delete', ComponenteDeleteView.as_view(), name='componete-delete'),
+
     #  urls para django_registration
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -108,8 +124,8 @@ urlpatterns = [
     path('', include('django_fido.urls')),
 
     #  url para api
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #path('api/', include(router.urls)),
+    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     # urls para busqueda
     path('search_producto/', Search_producto.as_view(), name='search_producto')
