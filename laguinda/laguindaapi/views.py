@@ -10,6 +10,7 @@ from laguindaapi.models import Producto, Comentario, Valoracion, Tienda, Reserva
 from django.db.models import Q
 from django.core.exceptions import PermissionDenied
 from tempus_dominus.widgets import DateTimePicker
+from django.db.models import CharField, Value
 # vistas para index
 
 def index(request):
@@ -26,13 +27,13 @@ class ProductoListView(ListView):
 class ProductoCreateView(PermissionRequiredMixin,CreateView):
     model = Producto
     success_url= reverse_lazy("Producto-list")
-    fields = ['nombre','precio','oferta','imagen','ingrediente','producto']
+    fields = ['nombre','precio','oferta','imagen','ingrediente','componente']
     permission_required='laguindaapi.add_Producto'
 
 class ProductoUpdateView(PermissionRequiredMixin,UpdateView):
     model = Producto
     success_url= reverse_lazy("Producto-list")
-    fields = ['nombre','precio','oferta','imagen','ingrediente']
+    fields = ['nombre','precio','oferta','imagen','ingrediente','componente']
     template_name_suffix = '_update_form'
     permission_required='laguindaapi.change_Producto'
 
@@ -435,7 +436,51 @@ class ComponenteListView(LoginRequiredMixin,ListView):
     model = Componente
     def get_queryset (self):
         object_list = Componente.objects.order_by("nombre")
-        return object_list
+        objale=object_list.annotate(Gluten = Value('', output_field=CharField()),
+                                Huevos = Value('', output_field=CharField()),
+                                Lacteos = Value('', output_field=CharField()),
+                                Cacahuetes = Value('', output_field=CharField()),
+                                Frutos_secos = Value('', output_field=CharField()),
+                                Soja = Value('', output_field=CharField()),
+                                Crustaceos = Value('', output_field=CharField()),
+                                Pescado = Value('', output_field=CharField()),
+                                Moluscos = Value('', output_field=CharField()),
+                                Altramuces = Value('', output_field=CharField()),
+                                Sesamo = Value('', output_field=CharField()),
+                                Mostaza = Value('', output_field=CharField()),
+                                Sulfitos = Value('', output_field=CharField()),
+                                Apio = Value('', output_field=CharField()),)
+        for objeto in objale:
+            for ingre in objeto.ingrediente.all():
+                if Alergenos.objects.get(nombre="Gluten") in ingre.alergenos.all():
+                    objeto.Gluten="X"
+                if Alergenos.objects.get(nombre="Huevos") in ingre.alergenos.all():
+                    objeto.Huevos="X"
+                if Alergenos.objects.get(nombre="Lacteos") in ingre.alergenos.all():
+                    objeto.Lacteos="X"
+                if Alergenos.objects.get(nombre="Cacahuetes") in ingre.alergenos.all():
+                    objeto.Cacahuetes="X"
+                if Alergenos.objects.get(nombre="Frutos_secos") in ingre.alergenos.all():
+                    objeto.Frutos_secos="X"
+                if Alergenos.objects.get(nombre="Soja") in ingre.alergenos.all():
+                    objeto.Soja="X"
+                if Alergenos.objects.get(nombre="Crustaceos") in ingre.alergenos.all():
+                    objeto.Crustaceos="X"
+                if Alergenos.objects.get(nombre="Pescado") in ingre.alergenos.all():
+                    objeto.Pescado="X"
+                if Alergenos.objects.get(nombre="Moluscos") in ingre.alergenos.all():
+                    objeto.Moluscos="X"
+                if Alergenos.objects.get(nombre="Altramuces") in ingre.alergenos.all():
+                    objeto.Altramuces="X"
+                if Alergenos.objects.get(nombre="Sesamo") in ingre.alergenos.all():
+                    objeto.Sesamo="X"
+                if Alergenos.objects.get(nombre="Mostaza") in ingre.alergenos.all():
+                    objeto.Mostaza="X"
+                if Alergenos.objects.get(nombre="Sulfitos") in ingre.alergenos.all():
+                    objeto.Sulfitos="X"
+                if Alergenos.objects.get(nombre="Apio") in ingre.alergenos.all():
+                    objeto.Apio="X"
+        return objale
     def get_context_data(self, **kwargs):
         context = super(ComponenteListView, self).get_context_data(**kwargs)
         for alergeno in Alergenos.objects.all():
@@ -449,31 +494,23 @@ class ComponenteDetailView(LoginRequiredMixin,DetailView):
         context = super(ComponenteDetailView, self).get_context_data(**kwargs)
         for alergeno in Alergenos.objects.all():
             context[alergeno.nombre] = Alergenos.objects.get(nombre=alergeno.nombre)
-        return context
-    def get_object(self):
-        obj = super().get_object()
-        valos= obj.valoracion_set.all()
-        if len(valos) != 0:
-            cuenta=0
-            for punto in valos:
-                cuenta+=int(punto.puntuacion)
-            if not obj.media == int(cuenta)/len(valos):
-                obj.media = int(cuenta)/len(valos)
-                obj.save()
-                obj=Producto.objects.get(nombre=obj)
-        sale=obj
-        return sale
+        objeto=super(ComponenteDetailView, self).get_object()
+        for ingre in objeto.ingrediente.all():
+            for alergeno in Alergenos.objects.all():
+                if Alergenos.objects.get(nombre=alergeno.nombre) in ingre.alergenos.all():
+                    context["deta"+alergeno.nombre] = "X"
+        return context    
 
 class ComponenteCreateView(LoginRequiredMixin,CreateView):
     login_url = 'login'
     model = Componente
-    fields = ['nombre','ingrediente','alergenos']
+    fields = ['nombre','ingrediente']
     success_url = reverse_lazy("componente-list")
 
 class ComponenteUpdateview(LoginRequiredMixin,UpdateView):
     login_url = 'login'
     model = Componente
-    fields = ['nombre','ingrediente','alergenos']
+    fields = ['nombre','ingrediente']
     success_url = reverse_lazy("componente-list")
     template_name_suffix = '_update_form'
 
@@ -483,44 +520,170 @@ class ComponenteDeleteView(LoginRequiredMixin,DeleteView):
     success_url = reverse_lazy("componente-list")
 
 
-'''
-class ReservaListView(LoginRequiredMixin,ListView):
+#Vistas para alerjenos de productos
+
+class AleProductoListeview(LoginRequiredMixin,ListView):
     login_url = 'login'
-    model= Reserva
+    model = Producto
+    template_name_suffix = '_alergeno_list'
     def get_queryset (self):
-        object_list = Reserva.objects.filter(user=self.request.user).order_by("-Fecha_Pedido")
-        return object_list
+        object_list = Producto.objects.order_by("nombre")
+        objale=object_list.annotate(Gluten = Value('', output_field=CharField()),
+                                Huevos = Value('', output_field=CharField()),
+                                Lacteos = Value('', output_field=CharField()),
+                                Cacahuetes = Value('', output_field=CharField()),
+                                Frutos_secos = Value('', output_field=CharField()),
+                                Soja = Value('', output_field=CharField()),
+                                Crustaceos = Value('', output_field=CharField()),
+                                Pescado = Value('', output_field=CharField()),
+                                Moluscos = Value('', output_field=CharField()),
+                                Altramuces = Value('', output_field=CharField()),
+                                Sesamo = Value('', output_field=CharField()),
+                                Mostaza = Value('', output_field=CharField()),
+                                Sulfitos = Value('', output_field=CharField()),
+                                Apio = Value('', output_field=CharField()),)
+        for objeto in objale:
+            for ingre in objeto.ingrediente.all():
+                if Alergenos.objects.get(nombre="Gluten") in ingre.alergenos.all():
+                    objeto.Gluten="X"
+                if Alergenos.objects.get(nombre="Huevos") in ingre.alergenos.all():
+                    objeto.Huevos="X"
+                if Alergenos.objects.get(nombre="Lacteos") in ingre.alergenos.all():
+                    objeto.Lacteos="X"
+                if Alergenos.objects.get(nombre="Cacahuetes") in ingre.alergenos.all():
+                    objeto.Cacahuetes="X"
+                if Alergenos.objects.get(nombre="Frutos_secos") in ingre.alergenos.all():
+                    objeto.Frutos_secos="X"
+                if Alergenos.objects.get(nombre="Soja") in ingre.alergenos.all():
+                    objeto.Soja="X"
+                if Alergenos.objects.get(nombre="Crustaceos") in ingre.alergenos.all():
+                    objeto.Crustaceos="X"
+                if Alergenos.objects.get(nombre="Pescado") in ingre.alergenos.all():
+                    objeto.Pescado="X"
+                if Alergenos.objects.get(nombre="Moluscos") in ingre.alergenos.all():
+                    objeto.Moluscos="X"
+                if Alergenos.objects.get(nombre="Altramuces") in ingre.alergenos.all():
+                    objeto.Altramuces="X"
+                if Alergenos.objects.get(nombre="Sesamo") in ingre.alergenos.all():
+                    objeto.Sesamo="X"
+                if Alergenos.objects.get(nombre="Mostaza") in ingre.alergenos.all():
+                    objeto.Mostaza="X"
+                if Alergenos.objects.get(nombre="Sulfitos") in ingre.alergenos.all():
+                    objeto.Sulfitos="X"
+                if Alergenos.objects.get(nombre="Apio") in ingre.alergenos.all():
+                    objeto.Apio="X"
+            for componente in objeto.componente.all():
+                for ingre in componente.ingrediente.all():
+                    if Alergenos.objects.get(nombre="Gluten") in ingre.alergenos.all():
+                        objeto.Gluten="X"
+                    if Alergenos.objects.get(nombre="Huevos") in ingre.alergenos.all():
+                        objeto.Huevos="X"
+                    if Alergenos.objects.get(nombre="Lacteos") in ingre.alergenos.all():
+                        objeto.Lacteos="X"
+                    if Alergenos.objects.get(nombre="Cacahuetes") in ingre.alergenos.all():
+                        objeto.Cacahuetes="X"
+                    if Alergenos.objects.get(nombre="Frutos_secos") in ingre.alergenos.all():
+                        objeto.Frutos_secos="X"
+                    if Alergenos.objects.get(nombre="Soja") in ingre.alergenos.all():
+                        objeto.Soja="X"
+                    if Alergenos.objects.get(nombre="Crustaceos") in ingre.alergenos.all():
+                        objeto.Crustaceos="X"
+                    if Alergenos.objects.get(nombre="Pescado") in ingre.alergenos.all():
+                        objeto.Pescado="X"
+                    if Alergenos.objects.get(nombre="Moluscos") in ingre.alergenos.all():
+                        objeto.Moluscos="X"
+                    if Alergenos.objects.get(nombre="Altramuces") in ingre.alergenos.all():
+                        objeto.Altramuces="X"
+                    if Alergenos.objects.get(nombre="Sesamo") in ingre.alergenos.all():
+                        objeto.Sesamo="X"
+                    if Alergenos.objects.get(nombre="Mostaza") in ingre.alergenos.all():
+                        objeto.Mostaza="X"
+                    if Alergenos.objects.get(nombre="Sulfitos") in ingre.alergenos.all():
+                        objeto.Sulfitos="X"
+                    if Alergenos.objects.get(nombre="Apio") in ingre.alergenos.all():
+                        objeto.Apio="X"
+        return objale
 
-class ReservaDetailView(LoginRequiredMixin,DetailView):
+class AleProductoDetailview(LoginRequiredMixin,DetailView):
     login_url = 'login'
-    model = Reserva
+    model = Producto
+    template_name_suffix = '_alergeno_detail'
+    def get_context_data(self, **kwargs):
+        context = super(AleProductoDetailview, self).get_context_data(**kwargs)
+        for alergeno in Alergenos.objects.all():
+            context[alergeno.nombre] = Alergenos.objects.get(nombre=alergeno.nombre)
+        objeto=super(AleProductoDetailview, self).get_object()
+        for ingre in objeto.ingrediente.all():
+            for alergeno in Alergenos.objects.all():
+                if Alergenos.objects.get(nombre=alergeno.nombre) in ingre.alergenos.all():
+                    context["deta"+alergeno.nombre] = "X"
+        for compo in objeto.componente.all():
+            for ingre in compo.ingrediente.all():
+                for alergeno in Alergenos.objects.all():
+                    if Alergenos.objects.get(nombre=alergeno.nombre) in ingre.alergenos.all():
+                        context["deta"+alergeno.nombre] = "X"
+        object_list = Componente.objects.order_by("nombre")
+        objale=object_list.annotate(Gluten = Value('', output_field=CharField()),
+                                Huevos = Value('', output_field=CharField()),
+                                Lacteos = Value('', output_field=CharField()),
+                                Cacahuetes = Value('', output_field=CharField()),
+                                Frutos_secos = Value('', output_field=CharField()),
+                                Soja = Value('', output_field=CharField()),
+                                Crustaceos = Value('', output_field=CharField()),
+                                Pescado = Value('', output_field=CharField()),
+                                Moluscos = Value('', output_field=CharField()),
+                                Altramuces = Value('', output_field=CharField()),
+                                Sesamo = Value('', output_field=CharField()),
+                                Mostaza = Value('', output_field=CharField()),
+                                Sulfitos = Value('', output_field=CharField()),
+                                Apio = Value('', output_field=CharField()),)
+        for detaobjeto in objale:
+            for ingre in detaobjeto.ingrediente.all():
+                if Alergenos.objects.get(nombre="Gluten") in ingre.alergenos.all():
+                    detaobjeto.Gluten="X"
+                if Alergenos.objects.get(nombre="Huevos") in ingre.alergenos.all():
+                    detaobjeto.Huevos="X"
+                if Alergenos.objects.get(nombre="Lacteos") in ingre.alergenos.all():
+                    detaobjeto.Lacteos="X"
+                if Alergenos.objects.get(nombre="Cacahuetes") in ingre.alergenos.all():
+                    detaobjeto.Cacahuetes="X"
+                if Alergenos.objects.get(nombre="Frutos_secos") in ingre.alergenos.all():
+                    detaobjeto.Frutos_secos="X"
+                if Alergenos.objects.get(nombre="Soja") in ingre.alergenos.all():
+                    detaobjeto.Soja="X"
+                if Alergenos.objects.get(nombre="Crustaceos") in ingre.alergenos.all():
+                    detaobjeto.Crustaceos="X"
+                if Alergenos.objects.get(nombre="Pescado") in ingre.alergenos.all():
+                    detaobjeto.Pescado="X"
+                if Alergenos.objects.get(nombre="Moluscos") in ingre.alergenos.all():
+                    detaobjeto.Moluscos="X"
+                if Alergenos.objects.get(nombre="Altramuces") in ingre.alergenos.all():
+                    detaobjeto.Altramuces="X"
+                if Alergenos.objects.get(nombre="Sesamo") in ingre.alergenos.all():
+                    detaobjeto.Sesamo="X"
+                if Alergenos.objects.get(nombre="Mostaza") in ingre.alergenos.all():
+                    detaobjeto.Mostaza="X"
+                if Alergenos.objects.get(nombre="Sulfitos") in ingre.alergenos.all():
+                    detaobjeto.Sulfitos="X"
+                if Alergenos.objects.get(nombre="Apio") in ingre.alergenos.all():
+                    detaobjeto.Apio="X"
+        context["componentes"] = objale
+        return context
 
-class ReservaCreateView(LoginRequiredMixin,CreateView):
+class AleProductoCreateView(LoginRequiredMixin,CreateView):
     login_url = 'login'
-    model = Reserva
-    fields = []
-    success_url= reverse_lazy("reserva-list")
-    def form_valid(self, form):
-        actual= timezone.now()
-        form.instance.Fecha_Pedido = actual
-        form.instance.user = self.request.user
-        form.instance.costo = 0
-        return super().form_valid(form)
+    model = Producto
+    success_url= reverse_lazy("aleproducto-list")
+    fields = ['nombre','precio','oferta','imagen','ingrediente','componente']
 
-class ResevaUpdateView(LoginRequiredMixin,UpdateView):
+class AleProductoUpdateView(LoginRequiredMixin,UpdateView):
     login_url = 'login'
-    model = Reserva
-    success_url= reverse_lazy("reserva-list")
+    model = Producto
+    success_url= reverse_lazy("aleproducto-list")
+    fields = ['nombre','precio','oferta','imagen','ingrediente','componente']
     template_name_suffix = '_update_form'
-    fields = ['Fecha_Entrega']
 
-class ReservaDeleteView(LoginRequiredMixin,DeleteView):
+class AleProductoDeleteView(LoginRequiredMixin,DeleteView):
     login_url = 'login'
-    model = Reserva
-    success_url= reverse_lazy("reserva-list")
-    def get_object(self):
-        obj=super().get_object()
-        if obj.user == self.request.user or self.request.user.is_staff:
-            return obj
-        else:
-            raise PermissionDenied'''
+    model = Producto
+    success_url = reverse_lazy('aleproducto-list')

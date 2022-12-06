@@ -10,6 +10,7 @@ from laguindaapi.views import EncargoCreateView, EncargoDeleteView, EncargoUpdat
 from laguindaapi.views import PendienteListView, PendienteUpdateView
 from laguindaapi.views import Ingredientelistview, IngredienteDetailView, IngredienteCreateView, IngredienteUpdateView, IngredienteDeleteView
 from laguindaapi.views import ComponenteListView, ComponenteDetailView, ComponenteCreateView, ComponenteUpdateview, ComponenteDeleteView
+from laguindaapi.views import AleProductoListeview, AleProductoDetailview, AleProductoCreateView, AleProductoUpdateView, AleProductoDeleteView
 from laguindaapi.views import Search_producto
 from django.conf import settings
 from django.conf.urls.static import static
@@ -108,8 +109,15 @@ urlpatterns = [
     path('componente', ComponenteListView.as_view(), name='componente-list'),
     path('componente/<int:pk>', ComponenteDetailView.as_view(), name='componente-detail'),
     path('componente/add', ComponenteCreateView.as_view(), name='componente-add'),
-    path('componente/<int:pk>/update', ComponenteUpdateview.as_view(), name='componete-update'),
-    path('componente/<int:pk>/delete', ComponenteDeleteView.as_view(), name='componete-delete'),
+    path('componente/<int:pk>/update', ComponenteUpdateview.as_view(), name='componente-update'),
+    path('componente/<int:pk>/delete', ComponenteDeleteView.as_view(), name='componente-delete'),
+
+    #   url para alejernos de producto
+    path('aleproducto', AleProductoListeview.as_view(), name='aleproducto-list'),
+    path('aleproducot/<int:pk>', AleProductoDetailview.as_view(), name='aleproducto-detail'),
+    path('aleproducto/add', AleProductoCreateView.as_view(), name='aleproducto-add'),
+    path('aleproducto/<int:pk>/update', AleProductoUpdateView.as_view(), name='aleproducto-update'),
+    path('alepreducto/<int:pk>/delete', AleProductoDeleteView.as_view(), name='aleproducto-delete'),
 
     #  urls para django_registration
     path('accounts/', include('django_registration.backends.one_step.urls')),

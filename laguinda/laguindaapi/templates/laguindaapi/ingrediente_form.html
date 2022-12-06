@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
-    <P>Seguro que quieres crear una reserva</P>
-    <form enctype="multipart/form-data" method="post">{% csrf_token %}
-        {{ form.as_p }}
+<div class="text-center"></div>
+    <form enctype="multipart/form-data" method="post" >{% csrf_token %}
+        {{ form|crispy }}
         <input type="submit" value="Crear">
     </form>
+</div>
 {% endblock %}

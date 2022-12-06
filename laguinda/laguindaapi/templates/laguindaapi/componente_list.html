@@ -30,24 +30,20 @@
                 {% for componente in object_list %}
                     <tr>
                         <th scope="row"><a href="{% url 'componente-detail' componente.id %}">{{ componente.nombre }}</a></th>
-                        {% for ingrediente in componente.ingrediente.all %}
-                            <tr>
-                                {% if Gluten in ingrediente.alergenos.all %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Huevos in ingrediente.alergenos.all %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Lacteos in ingrediente.alergenos.all %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Cacahuetes in ingrediente.alergenos.all %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Frutos_secos in ingrediente.alergenos.all %}   <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Soja in ingrediente.alergenos.all %}           <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Crustaceos in ingrediente.alergenos.all %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Pescado in ingrediente.alergenos.all %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Moluscos in ingrediente.alergenos.all %}       <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Altramuces in ingrediente.alergenos.all %}     <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Sesamo in ingrediente.alergenos.all %}         <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Mostaza in ingrediente.alergenos.all %}        <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Sulfitos in ingrediente.alergenos.all %}       <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                                {% if Apio in ingrediente.alergenos.all %}           <th class="text-center">X</th>{% else %}<td></td>{% endif %}
-                            </tr>
-                        {% endfor %}
+                        <th class="text-center">{{ componente.Gluten }}</th>
+                        <th class="text-center">{{ componente.Huevos }}</th>
+                        <th class="text-center">{{ componente.Lacteos }}</th>
+                        <th class="text-center">{{ componente.Cacahuetes }}</th>
+                        <th class="text-center">{{ componente.Frutos_secos }}</th>
+                        <th class="text-center">{{ componente.Soja }}</th>
+                        <th class="text-center">{{ componente.Crustaceos }}</th>
+                        <th class="text-center">{{ componente.Pescado }}</th>
+                        <th class="text-center">{{ componente.Moluscos }}</th>
+                        <th class="text-center">{{ componente.Altramuces }}</th>
+                        <th class="text-center">{{ componente.Sesamo }}</th>
+                        <th class="text-center">{{ componente.Mostaza }}</th>
+                        <th class="text-center">{{ componente.Sulfitos }}</th>
+                        <th class="text-center">{{ componente.Apio }}</th>
                     </tr>
                 {% endfor %}
             </tbody>

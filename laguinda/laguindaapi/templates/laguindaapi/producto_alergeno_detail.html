@@ -2,14 +2,14 @@
 
 {% block content %}
     <h2>
-        Componente
-        <a href=" {% url 'componente-update' object.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
-        <a href=" {% url 'componente-delete' object.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
+        Producto
+        <a href=" {% url 'aleproducto-update' object.id %} "><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+        <a href=" {% url 'aleproducto-delete' object.id %} "><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></a>
     </h2>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Componente</th>
+                <th scope="col">Producto</th>
                 <th scope="col">Gluten</th>
                 <th scope="col">Hevos</th>
                 <th scope="col">Lacteos</th>
@@ -46,11 +46,58 @@
             </tr>
         </tbody>
     </table>
+    <h2> Componentes</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Componentes</th>
+                <th scope="col">Gluten</th>
+                <th scope="col">Huevos</th>
+                <th scope="col">Lacteos</th>
+                <th scope="col">Cacahuetes</th>
+                <th scope="col">frutos_secos</th>
+                <th scope="col">Soja</th>
+                <th scope="col">Crustaceos</th>
+                <th scope="col">Pescado</th>
+                <th scope="col">Moluscos</th>
+                <th scope="col">Altramuces</th>
+                <th scope="col">Sesamo</th>
+                <th scope="col">Mostaza</th>
+                <th scope="col">Sulfitos</th>
+                <th scope="col">Apio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for componente in object.componente.all %}
+                {% for componentelist in componentes %}
+                    {% if componente == componentelist %}
+                        <tr>
+                            <th scope="row"><a href="{% url 'componente-detail' componente.id %}">{{ componente.nombre }}</a></th>
+                            <th class="text-center">{{ componentelist.Gluten }}</th>
+                            <th class="text-center">{{ componentelist.Huevos }}</th>
+                            <th class="text-center">{{ componentelist.Lacteos }}</th>
+                            <th class="text-center">{{ componentelist.Cacahuetes }}</th>
+                            <th class="text-center">{{ componentelist.frutos_secos }}</th>
+                            <th class="text-center">{{ componentelist.Soja }}</th>
+                            <th class="text-center">{{ componentelist.Crustaceos }}</th>
+                            <th class="text-center">{{ componentelist.Pescado }}</th>
+                            <th class="text-center">{{ componentelist.Moluscos }}</th>
+                            <th class="text-center">{{ componentelist.Altramuces }}</th>
+                            <th class="text-center">{{ componentelist.Sesamo }}</th>
+                            <th class="text-center">{{ componentelist.Mostaza }}</th>
+                            <th class="text-center">{{ componentelist.Sulfitos }}</th>
+                            <th class="text-center">{{ componentelist.Apio }}</th>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+    </tbody>
+    </table>
     <h2> Ingredientes</h2>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Ingredientes</th>
+                <th scope="col">Ingrediente</th>
                 <th scope="col">Gluten</th>
                 <th scope="col">Huevos</th>
                 <th scope="col">Lacteos</th>

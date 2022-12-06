@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 {% if user == comentario.user or user.is_staff %}
     <form method="post">{% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <input type="submit" value="Update">
     </form>
 {% else %}

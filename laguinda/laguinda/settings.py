@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'cookielaw',
     'analytical',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -105,6 +106,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'laguinda.wsgi.application'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SITE_ID = 2
 

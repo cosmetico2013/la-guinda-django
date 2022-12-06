@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block head %}
+{% endblock %}
+{% block content %}
+    <h2 class="text-center mb-4" >Productos
+    <a href=" {% url 'aleproducto-add' %} "><button type="button" class="btn btn-sm btn-outline-primary">AÑADIR</button></a>
+    </h2>
+    <div class="row">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Productos</th>
+                    <th scope="col">Gluten</th>
+                    <th scope="col">Hevos</th>
+                    <th scope="col">Lacteos</th>
+                    <th scope="col">Cacahuetes</th>
+                    <th scope="col">frutos_secos</th>
+                    <th scope="col">Soja</th>
+                    <th scope="col">Crustaceos</th>
+                    <th scope="col">Pescado</th>
+                    <th scope="col">Moluscos</th>
+                    <th scope="col">Altramuces</th>
+                    <th scope="col">Sesamo</th>
+                    <th scope="col">Mostaza</th>
+                    <th scope="col">Sulfitos</th>
+                    <th scope="col">Apio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in object_list %}
+                    <tr>
+                        <th scope="row"><a href="{% url 'aleproducto-detail' producto.id %}">{{ producto.nombre }}</a></th>
+                        <th class="text-center">{{ producto.Gluten }}</th>
+                        <th class="text-center">{{ producto.Huevos }}</th>
+                        <th class="text-center">{{ producto.Lacteos }}</th>
+                        <th class="text-center">{{ producto.Cacahuetes }}</th>
+                        <th class="text-center">{{ producto.Frutos_secos }}</th>
+                        <th class="text-center">{{ producto.Soja }}</th>
+                        <th class="text-center">{{ producto.Crustaceos }}</th>
+                        <th class="text-center">{{ producto.Pescado }}</th>
+                        <th class="text-center">{{ producto.Moluscos }}</th>
+                        <th class="text-center">{{ producto.Altramuces }}</th>
+                        <th class="text-center">{{ producto.Sesamo }}</th>
+                        <th class="text-center">{{ producto.Mostaza }}</th>
+                        <th class="text-center">{{ producto.Sulfitos }}</th>
+                        <th class="text-center">{{ producto.Apio }}</th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
